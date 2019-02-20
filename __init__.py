@@ -8,7 +8,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'messages.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'teams.sqlite'),
     )
 
     # ensure the instance folder exists
@@ -22,6 +22,9 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+    from . import teams
+    app.register_blueprint(teams.bp)
 
     return app
 
