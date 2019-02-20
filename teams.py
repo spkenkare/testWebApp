@@ -10,28 +10,48 @@ bp = Blueprint('teams', __name__, url_prefix='/teams')
 
 
 @bp.route('/', methods=('GET', 'POST'))
-def createAndDisplayTeams():
+def createTeam():
+    print("inside createTeam")
     teams = []
     db = get_db()
-    if request.method == 'POST':
-        team = request.form['teamName']
-        #teams.append(team)
-        error = None
+    print(request.form)
+    if "teamName" in request.form:
+        if request.method == 'POST':
+            team = request.form['teamName']
+            error = None
 
-        if not team:
-            error = 'Team name cannot be blank.'
+            if not team:
+                error = 'Team name cannot be blank.'
 
-        if error is None:
-            db.execute(
-                'INSERT INTO teams (name) VALUES (?)',
-                (team,)
-            )
-            db.commit()
+            if error is None:
+                db.execute(
+                    'INSERT INTO teams (name) VALUES (?)',
+                    (team,)
+                )
+                db.commit()
 
-    teamQuery = db.execute('SELECT name FROM teams')
+    elif "message" in request.form:
+        if request.method == 'POST':
+            teamID = request.form['teamID']
+            message = request.form['message']
+            error = None
+
+            if not message:
+                error = 'Team name cannot be blank.'
+
+            if error is None:
+                db.execute(
+                    'INSERT INTO posts (message, team_id) VALUES (?,?)',
+                    (message,teamID,)
+                )
+                db.commit()
+        #print("postMessage form")
+
+
+    teamQuery = db.execute('SELECT * FROM teams')
     teamRows = teamQuery.fetchall()
     for row in teamRows:
-        teams.append(row['name'])
+        teams.append((row['id'], row['name']))
 
 
     return render_template('teams/index.html', items = teams)

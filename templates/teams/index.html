@@ -5,16 +5,24 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
+  <form id = "createTeam" method="post">
     <label for="teamName">Team Name</label>
     <input name="teamName" id="teamName" required>
-    <input type="submit" value="Create Team">
+    <input type="submit" id = "createTeam" value="Create Team">
   </form>
 <h1> Teams </h1>
 <table>
 {% for item in items %}
 <tr>
-  <td>{{item}}</td>
+  <td>
+    <b>{{item[1]}}</b>
+    <form id = "postMessage" method="post">
+      <label for="message">Message</label>
+      <input type = "hidden" name="teamID" value={{item[0]}}>
+      <input name="message" id="message" required>
+      <input type="submit" id = "postMessage" value="Add Message">
+    </form>
+  </td>
 </tr>
 {% endfor %}
 </table>
