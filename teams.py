@@ -11,7 +11,6 @@ bp = Blueprint('teams', __name__, url_prefix='/teams')
 
 @bp.route('/', methods=('GET', 'POST'))
 def createTeam():
-    print("inside createTeam")
     teams = []
     db = get_db()
     print(request.form)
@@ -45,14 +44,33 @@ def createTeam():
                     (message,teamID,)
                 )
                 db.commit()
-        #print("postMessage form")
 
 
-    teamQuery = db.execute('SELECT * FROM teams')
+    teamQuery = db.execute('SELECT id FROM teams')
     teamRows = teamQuery.fetchall()
     for row in teamRows:
-        teams.append((row['id'], row['name']))
+        #messagesQuery = db.execute('SELECT message FROM posts WHERE team_id = ?', (row['id'],))
+        #messageRows = messagesQuery.fetchall()
+        #messages = []
+        #for mRow in messageRows:
+        #    messages.append(mRow['message'])
+        #teams.append((row['id'], row['name'], messages))
+        teams.append(row['id'])
 
+    return render_template('teams/index.html', teamIDs = teams)
 
-    return render_template('teams/index.html', items = teams)
-
+@bp.route('/messages.html/<teamID>')
+def returnMessages(teamID):
+    #teamID = request.args.get('teamID')
+    db = get_db()
+    print("Team ID: ", teamID)
+    nameQuery = db.execute('SELECT name FROM teams WHERE id = ?', (teamID,))
+    nameRows = nameQuery.fetchall()
+    name = nameRows[0]['name']
+    print(name)
+    messagesQuery = db.execute('SELECT message FROM posts WHERE team_id = ?', (teamID,))
+    messageRows = messagesQuery.fetchall()
+    messages = []
+    for mRow in messageRows:
+        messages.append(mRow['message'])
+    return render_template('teams/messages.html', messages = messages, name = name)

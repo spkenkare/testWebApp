@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{name}}{% endblock %}</h1>
+{% endblock %}
+
+{#
+    <form id = "postMessage" method="post">
+      <label for="message">Message</label>
+      <input type="hidden" name="teamID" value={{item[0]}}>
+      <input name="message" id="message" required>
+      <input type="submit" id = "postMessage" value="Add Message">
+    </form>
+    <br>
+
+    <table border = 1>
+    {% for message in item[2] %}
+    <tr><td>{{message}}</td></tr>
+    {% endfor %}
+    </table>
+#}
