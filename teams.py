@@ -13,10 +13,10 @@ bp = Blueprint('teams', __name__, url_prefix='/teams')
 def displayTeams(): #display all teams
     teams = []
     db = get_db()
-    teamQuery = db.execute('SELECT id FROM teams')
+    teamQuery = db.execute('SELECT * FROM teams')
     teamRows = teamQuery.fetchall()
     for row in teamRows:
-        teams.append(row['id'])
+        teams.append((row['id'], row['name']))
     return render_template('teams/index.html', teamIDs = teams)
     
 @bp.route('/', methods=('GET', 'POST'))
@@ -72,8 +72,8 @@ def createTeam(): #offer option to create new teams
     """
     return displayTeams()
 
-@bp.route('/messages.html/<teamID>') #for each iframe/team page
-def returnMessages(teamID): #display the current messages
+@bp.route('/messages.html/<teamID>', subdomain = '<teamName>') #for each iframe/team page
+def returnMessages(teamID, teamName): #display the current messages
     db = get_db()
     print("Team ID: ", teamID)
     nameQuery = db.execute('SELECT name FROM teams WHERE id = ?', (teamID,))
@@ -88,7 +88,7 @@ def returnMessages(teamID): #display the current messages
     return render_template('teams/messages.html', messages = messages, name = name)
 
 @bp.route('/messages.html/<teamID>', methods=('GET', 'POST'))
-def postMessage(teamID):
+def postMessage(teamID): #when someone posts a message to a team
     db = get_db()
     if request.method == 'POST':
         message = request.form['message']
@@ -104,4 +104,7 @@ def postMessage(teamID):
             )
             db.commit()
 
-    return returnMessages(teamID)
+    nameQuery = db.execute('SELECT name FROM teams WHERE id = ?', (teamID,))
+    nameRows = nameQuery.fetchall()
+    name = nameRows[0]['name']
+    return returnMessages(teamID, name)
