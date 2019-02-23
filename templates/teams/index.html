@@ -11,28 +11,15 @@
     <input type="submit" id = "createTeam" value="Create Team">
   </form>
 <h1> Teams </h1>
+
 <table border = 1 width = 30%>
 {% for team in teamIDs %}
 <tr> 
   <td>
-  {#<iframe src="messages.html?teamID="{{item[0]}}>#}
-  <iframe src={{url_for("teams.returnMessages", teamID = team[0], teamName = team[1])}} width = 100%>
-{#    <b>{{item[1]}}</b>
-    <form id = "postMessage" method="post">
-      <label for="message">Message</label>
-      <input type="hidden" name="teamID" value={{item[0]}}>
-      <input name="message" id="message" required>
-      <input type="submit" id = "postMessage" value="Add Message">
-    </form>
-    <br>
-
-    <table border = 1>
-    {% for message in item[2] %}
-    <tr><td>{{message}}</td></tr>
-    {% endfor %}
-    </table>
-#}
+  
+  <iframe src={{url_for("teams.returnMessages", teamName = team[1])}} width = 100%>
   </iframe>
+  
   </td>
 </tr>
 {% endfor %}
