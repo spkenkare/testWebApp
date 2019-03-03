@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}View Image{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+  <img id = "image" src = "../static/Milo.jpg" height = "20%" width = "20%">
+
+  <script>
+  function switchImage() {
+      var image = document.getElementById("image");
+      image.src = "https://i.ebayimg.com/images/g/L~kAAOxyQ45Q9Vwg/s-l225.jpg";
+  }
+  </script>
+
+  <br>
+
+  <button type = "button" id = "switchImage" onclick = "switchImage()"> Change Image </button>
+  
+{% endblock %}
+

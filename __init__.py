@@ -8,7 +8,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        SERVER_NAME='localhost:5000',
+        SERVER_NAME='lvh.me:5000',
         DATABASE=os.path.join(app.instance_path, 'teams.sqlite'),
     )
 
@@ -27,5 +27,14 @@ def create_app(test_config=None):
     from . import teams
     app.register_blueprint(teams.bp)
 
+    from . import brokenteams
+    app.register_blueprint(brokenteams.bp)
+    
+    from . import image
+    app.register_blueprint(image.bp)
+    
+    from . import badimage
+    app.register_blueprint(badimage.bp)
+    
     return app
 

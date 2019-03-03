@@ -21,4 +21,39 @@
 {% endfor %}
 </table>
 
+<br>
+
+<script>
+function getPage() {
+    var parentPage = window.frameElement;
+    if(parentPage == null) {
+        var text = document.createElement("p");
+        text.innerHTML = "Can't access parent";
+        document.body.appendChild(text);
+        return;
+    }
+    var parentDocument = parentPage.ownerDocument;
+    var iframes = parentDocument.getElementsByTagName('iframe');
+    //alert(iframes.length);
+    var i;
+    for (i = 0; i < iframes.length; i++) { 
+        var iframe = document.createElement("iframe");
+        //var html = '<body>Foo</body>';
+        //iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+        //console.log(iframes[i]);
+        iframe.src = iframes[i].src;
+        document.body.appendChild(iframe);
+    }
+
+    
+    //document.domain = "lvh.me";
+    //var parentURL = window.parent.location;
+    //alert(parentURL);
+}
+</script>
+
+<button type = "button" id = "getPage" onclick = "getPage()"> Request </button>
+
+
+
 {% endblock %}

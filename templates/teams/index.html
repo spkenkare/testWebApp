@@ -13,11 +13,15 @@
 <h1> Teams </h1>
 
 <table border = 1 width = 30%>
+{% set bpName = "teams.returnMessages" %}
+{% if broken == True %}
+{% set bpName = "brokenteams.returnMessages" %}
+{% endif %}
 {% for team in teamIDs %}
 <tr> 
   <td>
   
-  <iframe src={{url_for("teams.returnMessages", teamName = team[1])}} width = 100%>
+  <iframe src={{url_for(bpName, teamName = team[1])}} width = 100% height = 200%>
   </iframe>
   
   </td>

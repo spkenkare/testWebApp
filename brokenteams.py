@@ -7,7 +7,7 @@ from flask import (
 from app.db import get_db
 
 
-bp = Blueprint('teams', __name__, url_prefix='/teams')
+bp = Blueprint('brokenteams', __name__, url_prefix='/brokenteams')
 
 @bp.route('/') #at the index
 def displayTeams(): #display all teams
@@ -18,7 +18,7 @@ def displayTeams(): #display all teams
     teamRows = teamQuery.fetchall()
     for row in teamRows:
         teams.append((row['id'], row['name']))
-    return render_template('teams/index.html', teamIDs = teams, broken = False)
+    return render_template('teams/index.html', teamIDs = teams, broken=True)
     
 @bp.route('/', methods=('GET', 'POST'))
 def createTeam(): #offer option to create new teams
@@ -44,7 +44,7 @@ def createTeam(): #offer option to create new teams
     return displayTeams()
 
 
-@bp.route('/messages.html', subdomain = '<teamName>') #for each iframe/team page
+@bp.route('/messages.html/<teamName>') #for each iframe/team page
 def returnMessages(teamName): #display the current messages
     print("returnMessages") 
     db = get_db()
@@ -61,7 +61,7 @@ def returnMessages(teamName): #display the current messages
     #return render_template('teams/messages.html', name = teamName)
 
 
-@bp.route('/messages.html', subdomain = '<teamName>', methods=('GET', 'POST'))
+@bp.route('/messages.html/<teamName>', methods=('GET', 'POST'))
 def postMessage(teamName): #when someone posts a message to a team
     print("postMessage")
     #db = get_db()
